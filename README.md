@@ -41,6 +41,41 @@ Before running the app, ensure you have:
 ```bash
 git clone https://github.com/yourusername/SnapChef.git
 cd SnapChef
+```
+2.Setup Virtual Environment
+```bash
+python -m venv venv
+# On Windows:
+venv\Scripts\activate
+# On Linux/Mac:
+source venv/bin/activate
+```
+3. Install Dependencies
+ ```bash
+pip install -r requirements.txt
+```
+4. Start Docker Services (Pathway RAG + Trae)
+```bash
+Make sure Docker Desktop is running, then execute:
+
+docker compose down   # stop old containers if any
+docker compose up -d --build   # build and start services
+```
+Check if containers are running:
+```bash
+docker compose ps
+```
+5. Run the Flask App
+
+From the project root:
+```bash
+python run.py
+```
+6. Open in Browser
+
+Frontend (Flask UI): http://localhost:5000
+
+RAG/Pathway API (debug): http://localhost:8081
 
 # SnapToCook 🍳
 
