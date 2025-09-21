@@ -1,0 +1,4 @@
+rag_service_pathway
+SnapToCook-main
+C:\college\snaptocook\rag_service_pathway 
+C:\college\snaptocook\SnapToCook-main 

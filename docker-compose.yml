@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  rag-service:
+    build: ./rag_service_pathway
+    ports:
+      - "8081:8000"
+    environment:
+      - EMBED_MODEL=${EMBED_MODEL}
+    volumes:
+      - ./rag_service_pathway:/app
+      - rag_data:/app/data
+    restart: unless-stopped
+
+volumes:
+  rag_data:
