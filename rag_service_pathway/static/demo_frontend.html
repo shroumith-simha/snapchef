@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Snapchef — Recipe Search (Demo)</title>
+  <link rel="stylesheet" href="demo_frontend.css">
+  <!-- Use a safe system font stack; Google fonts omitted to keep offline/demo reliable -->
+</head>
+<body>
+  <div class="container">
+    <section class="hero" role="banner" aria-label="Hero">
+      <div class="title">
+        <h1>Snapchef — Recipe Search (Demo)</h1>
+        <p class="subtitle">Search Indian recipes live — type an ingredient or dish and press <strong>Search</strong> (example: <em>paneer</em>, <em>dal</em>).</p>
+
+        <div class="search-shell" aria-hidden="false">
+          <div class="star">✦</div>
+          <div class="search-box" role="search" aria-label="Search recipes">
+            <input id="query" type="text" placeholder="Try: paneer, masala dosa, dal tadka" autocomplete="off" />
+            <button id="btnSearch" class="btn" title="Search">Search</button>
+            <button id="btnClear" class="btn secondary" id="clearBtn">Clear</button>
+          </div>
+        </div>
+
+        <div id="status" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <main id="main" role="main">
+      <div id="results" class="results" aria-live="polite"></div>
+      <div class="note">Results are extracted from recipe pages and ranked live by semantic similarity.</div>
+    </main>
+  </div>
+
+<script>
+/* Frontend JS for demo — posts to /query_live and renders cards.
+   Filters out media URLs and provides status feedback. */
+
+function looksLikeMedia(url){
+  if(!url) return false;
+  url = url.split('?')[0].toLowerCase();
+  return url.includes('/wp-content/uploads/') || url.match(/\.(jpg|jpeg|png|webp|gif|svg|bmp)$/);
+}
+
+const qInput = document.getElementById('query');
+const btn = document.getElementById('btnSearch');
+const clr = document.querySelector('.btn.secondary');
+const status = document.getElementById('status');
+const resultsDiv = document.getElementById('results');
+
+qInput.addEventListener('keydown', (e) => { if(e.key==='Enter') btn.click(); });
+clr.addEventListener('click', () => { qInput.value=''; resultsDiv.innerHTML=''; status.textContent=''; qInput.focus(); });
+
+btn.addEventListener('click', async () => {
+  const q = (qInput.value||'').trim();
+  resultsDiv.innerHTML = '';
+  status.textContent = '';
+  if(!q){ status.textContent = 'Please enter a query (e.g., "paneer" or "dosa").'; return; }
+
+  btn.disabled = true; clr.disabled = true;
+  status.textContent = 'Searching — fetching and ranking candidates (may take a few seconds)...';
+
+  try {
+    const resp = await fetch('/query_live', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ query: q, k: 10 })
+    });
+
+    if(!resp.ok){
+      const t = await resp.text();
+      status.textContent = 'Server error: ' + resp.status;
+      console.error('server err', resp.status, t);
+      return;
+    }
+
+    const data = await resp.json();
+    const hits = (data.results||[]).filter(r => !looksLikeMedia(r.url));
+    if(hits.length === 0){
+      status.textContent = 'No results found for "'+ q +'". Try a simpler term (e.g., "paneer").';
+      return;
+    }
+
+    status.textContent = 'Found ' + hits.length + ' results.';
+    for(const r of hits){
+      const card = document.createElement('article');
+      card.className = 'card';
+      const title = r.title || r.url;
+      const snippet = (r.snippet || '').replace(/\s+/g,' ').trim();
+      card.innerHTML = `
+        <h3><a href="${escapeHtml(r.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(title)}</a></h3>
+        <div class="meta">${escapeHtml(r.url)}</div>
+        <p>${escapeHtml(snippet.slice(0,700))}${snippet.length>700?'...':''}</p>
+      `;
+      resultsDiv.appendChild(card);
+    }
+
+  } catch(err){
+    console.error(err);
+    status.textContent = 'Network or server error — check the container logs.';
+  } finally {
+    btn.disabled = false; clr.disabled = false;
+  }
+});
+
+// escape helper
+function escapeHtml(s){
+  if(!s) return '';
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// autofocus on load
+window.addEventListener('load', ()=>{ qInput.focus(); });
+</script>
+
+</body>
+</html>

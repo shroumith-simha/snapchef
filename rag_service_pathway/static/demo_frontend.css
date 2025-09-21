@@ -1,0 +1,193 @@
+/* demo_frontend.css - modern polished demo styles */
+
+/* Import a clean system-ish font fallback */
+@media (prefers-reduced-motion: no-preference) {
+  :root { --anim: all 0.18s ease; }
+}
+
+/* Color palette */
+:root{
+  --bg-1: #0f1724;   /* deep navy behind hero */
+  --bg-2: #f6f9fb;
+  --accent: #ff6b35; /* warm accent */
+  --muted: #6b7280;
+  --card: #fff;
+  --glass: rgba(255,255,255,0.06);
+  --shadow: 0 10px 30px rgba(2,6,23,0.12);
+}
+
+/* Reset */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg-2);
+  color:#0f1724;
+  -webkit-font-smoothing:antialiased;
+  line-height:1.45;
+}
+
+/* Page container */
+.container{
+  max-width:1100px;
+  margin:28px auto;
+  padding:18px;
+}
+
+/* Hero */
+.hero{
+  position:relative;
+  border-radius:14px;
+  overflow:hidden;
+  min-height:260px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:white;
+  background-image: linear-gradient(180deg, rgba(15,23,36,0.6), rgba(15,23,36,0.6)), url('background.jpg');
+  background-size:cover;
+  background-position:center;
+  box-shadow: var(--shadow);
+}
+
+/* decorative star top-right */
+.hero:after{
+  content: "";
+  position:absolute;
+  right:18px; top:18px;
+  width:48px; height:48px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35) 0 6px, transparent 7px),
+    radial-gradient(circle at 70% 70%, rgba(255,255,255,0.22) 0 6px, transparent 7px);
+  border-radius:50%;
+  filter: blur(2px);
+  opacity:0.95;
+}
+
+/* Hero text */
+.hero .title{
+  z-index:2;
+  max-width:880px;
+  padding:28px;
+}
+.hero h1{
+  font-size:32px;
+  line-height:1.05;
+  margin-bottom:6px;
+  letter-spacing:-0.6px;
+}
+.hero p.subtitle{
+  color:rgba(255,255,255,0.88);
+  margin-bottom:12px;
+  font-size:16px;
+}
+
+/* Search shell: star-border like effect */
+.search-shell{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  align-items:center;
+  margin:12px auto 0;
+  width:92%;
+  max-width:760px;
+  position:relative;
+}
+
+/* star/outline accent left */
+.search-shell .star {
+  position:absolute;
+  left:-22px;
+  top:50%;
+  transform:translateY(-50%) rotate(15deg);
+  width:42px;
+  height:42px;
+  background: radial-gradient(circle at 30% 30%, #fff8 0 6px, transparent 7px);
+  border-radius:6px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--accent);
+  font-weight:700;
+  font-size:18px;
+}
+
+/* input + button */
+.search-box{
+  width:100%;
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.search-box input[type="text"]{
+  flex:1;
+  padding:14px 18px;
+  border-radius:12px;
+  border: none;
+  background: rgba(255,255,255,0.95);
+  font-size:16px;
+  box-shadow: 0 6px 24px rgba(16,24,40,0.06);
+  outline: none;
+}
+.search-box input[type="text"]::placeholder{ color: #9aa3ad }
+.search-box .btn{
+  padding:12px 16px;
+  background: linear-gradient(180deg,var(--accent),#e94f2a);
+  color:white;
+  border-radius:10px;
+  border:none;
+  font-weight:600;
+  cursor:pointer;
+  min-width:110px;
+}
+.search-box .btn.secondary{
+  background:#fff;
+  color:var(--accent);
+  border:1px solid #eee;
+  box-shadow:none;
+}
+
+/* status */
+#status{
+  margin-top:12px;
+  color:var(--muted);
+  text-align:center;
+  font-size:14px;
+}
+
+/* results area */
+.results{
+  margin-top:20px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+/* result card */
+.card{
+  background:var(--card);
+  border-radius:12px;
+  padding:16px;
+  box-shadow: 0 8px 30px rgba(8,15,40,0.06);
+  border: 1px solid rgba(11,20,29,0.03);
+  transition: transform .14s ease, box-shadow .14s ease;
+}
+.card:hover{ transform: translateY(-6px); box-shadow: 0 14px 40px rgba(8,15,40,0.08); }
+.card h3{ font-size:18px; margin-bottom:6px; }
+.card h3 a{ color: #0b63a3; text-decoration:none; }
+.card .meta{ font-size:13px; color:#0b63a3; margin-bottom:8px; word-break:break-all; }
+.card p{ color:#334155; margin:0; font-size:15px; max-height:7.5em; overflow:hidden; }
+
+/* small footer note */
+.note{ color:var(--muted); font-size:13px; text-align:center; margin-top:14px; }
+
+/* mobile */
+@media (max-width:720px){
+  .hero{ min-height:220px; border-radius:10px; padding:18px; }
+  .hero h1{ font-size:22px }
+  .search-shell .star{ left:8px; top:auto; bottom:-20px; transform:none }
+  .search-box .btn{ min-width:88px; padding:10px 12px }
+  .container{ padding:10px }
+}

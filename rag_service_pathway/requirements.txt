@@ -1,0 +1,12 @@
+flask
+gunicorn
+requests
+beautifulsoup4
+readability-lxml
+python-dotenv
+pathway
+sentence-transformers>=2.2.2
+torch>=1.12.0
+faiss-cpu
+numpy
+tqdm
