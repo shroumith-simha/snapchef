@@ -2,7 +2,7 @@
 
 An AI-powered prototype that blends *Retrieval-Augmented Generation (RAG)* with *Computer Vision (CNN)* to deliver intelligent recipe recommendations. Built with *Flask, **Pathway, and **Trae*, this project demonstrates how multimodal AI can transform food discovery and recipe generation for real-world applications.
 
-![SnapChef](rag_service_pathway/static/images/demo_ui.png)
+
 
 ## 🌟 Features
 
@@ -81,7 +81,7 @@ RAG/Pathway API (debug): http://localhost:8081
 
 An AI-powered web application that transforms food images into detailed recipes using advanced deep learning. Built with Flask and PyTorch, this project demonstrates the power of multi-modal AI in culinary applications.
 
-![SnapToCook](Foodimg2Ing/static/images/UISS.png)
+
 
 ## 🌟 Features
 
